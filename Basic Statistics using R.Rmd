@@ -1,0 +1,334 @@
+---
+title: '#DQLAB1'
+author: "Dexy"
+date: '2023-02-24'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+rm(list=ls())
+```
+
+```{r}
+library(readxl)
+```
+
+```{r}
+#Memanggil dqlab dataset yang terdapat di storage googleapi
+data_intro <- read.csv("https://storage.googleapis.com/dqlab-dataset/data_intro.csv", sep=";")
+data_intro
+```
+
+```{r}
+#Membaca dataset dengan read.csv dan dimasukkan ke variable data_intro
+
+str(data_intro)
+```
+##1. Data Cleansing
+
+```{r}
+## mengubah data menjadi karakter karena tidak dilakukan analisis statistik pada variabel ID Pelanggan
+data_intro$ID.Pelanggan <- as.character(data_intro$ID.Pelanggan)
+data_intro$Nama <- as.character(data_intro$Nama)
+
+## melihat apakah sudah berhasil dalam mengubah variabel tersebut
+str(data_intro$ID.Pelanggan)
+str(data_intro$Nama)
+
+```
+
+```{r}
+## Mengubah data menjadi factor untuk membedakan data kualitatif dengan menggunakan function as.factor
+ data_intro$Jenis.Kelamin <- as.factor(data_intro$Jenis.Kelamin)
+ data_intro$Produk <- as.factor(data_intro$Produk)
+ data_intro$Tingkat.Kepuasan <- as.factor(data_intro$Tingkat.Kepuasan)
+
+## Melihat apakah sudah berhasil dalam mengubah variabel tersebut dengan menggunakan function str
+ str(data_intro$Jenis.Kelamin)
+ str(data_intro$Produk)
+ str(data_intro$Tingkat.Kepuasan)
+```
+
+```{r}
+# melihat data/ pemanggilan data
+data_intro
+# melihat tipe data
+str(data_intro)
+
+```
+
+```{r}
+#install.packages("pracma")
+library(pracma)
+## carilah modus untuk kolom Produk pada variable data_intro
+
+Mode(data_intro$Produk)
+
+## carilah modus untuk kolom Tingkat.Kepuasan pada variable data_intro
+
+Mode(data_intro$Tingkat.Kepuasan)
+
+```
+```{r}
+## carilah median untuk kolom Pendapatan dari variable data_intro
+median(data_intro$Pendapatan)
+
+## carilah median untuk  kolom Harga dari variable data_intro
+median(data_intro$Harga)
+
+## carilah median untuk kolom Jumlah dari variable data_intro
+median(data_intro$Jumlah)
+
+## carilah median untuk  kolom Total dari variable data_intro
+median(data_intro$Total)
+
+```
+
+```{r}
+## carilah mean untuk kolom Pendapatan pada variable data_intro
+mean(data_intro$Pendapatan)
+
+## carilah mean untuk kolom Harga pada variable data_intro
+mean(data_intro$Harga)
+
+## carilah mean untuk kolom Jumlah pada variable data_intro
+mean(data_intro$Jumlah)
+
+## carilah mean untuk kolom Total pada variable data_intro
+mean(data_intro$Total)
+
+```
+
+#Estimasi Nilai Sebaran Data Range
+```{r}
+## carilah range untuk kolom Pendapatan pada variable data_intro
+max(data_intro$Pendapatan)-min(data_intro$Pendapatan)
+
+```
+
+##Estimasi Nilai Sebaran Data Varians
+```{r}
+## Carilah varians untuk kolom Pendapatan dari variable data_intro
+var(data_intro$Pendapatan)
+
+```
+
+#Estimasi Nilai Sebaran Data Simpangan Baku/Standar Deviasi: Simpangan baku adalah simpangan data dari nilai rata-ratanya, simpangan baku nama lainnya adalah standard deviasi. Standard deviasi dapat digunakan untuk melihat keakuratan dari hasil estimasi, semakin kecil standard deviasi semakin akurat hasil estimasi.
+```{r}
+## Carilah simpangan baku untuk kolom Pendapatan dari variable data_intro
+
+sd(data_intro$Pendapatan)
+
+```
+
+#Function summary akan menampilkan kesimpulan pada variabel masing-masing. Untuk variabel bertipe character akan menampilkan panjang datanya. Variabel bertipe factor akan menampilkan jumlah data pada masing-masing kelas. Sedangkan untuk variabel bertipe numerik akan memunculkan nilai minimum, Q1,Q2 (median), Q3, mean, dan maximum.
+
+#Pengertian dari masing-masing istilah itu adalah sebagai berikut :
+
+#Minimum adalah nilai observasi terkecil.
+#Kuartil pertama (Q1), yang memotong 25 % dari data terendah.
+#Median (Q2) atau nilai pertengahan.
+#Kuartil ketiga (Q3), yang memotong 25 % dari data tertinggi.
+#Maksimum adalah nilai observasi terbesar.
+
+```{r}
+## carilah summary data dari data_intro
+summary(data_intro)
+```
+```{r}
+#install.packages("ggplot2")
+library(ggplot2)
+```
+
+```{r}
+## carilah sebaran data dari Jenis Kelamin
+plot(data_intro$Jenis.Kelamin)
+
+## carilah sebaran data dari Pendapatan
+hist(data_intro$Pendapatan)
+
+## carilah sebaran data dari Produk
+plot(data_intro$Produk)
+
+## carilah sebaran data dari Harga
+hist(data_intro$Harga)
+
+## carilah sebaran data dari Jumlah
+hist(data_intro$Jumlah)
+
+## carilah sebaran data dari Total
+hist(data_intro$Total)
+
+## carilah sebaran data dari Tingkat Kepuasan
+plot(data_intro$Tingkat.Kepuasan)
+```
+
+
+###Kesimpulan Analisis Deskriptif Menggunakan Visualisasi
+#Dari hasil analisis deskriptif pada praktek sebelumnya kita mendapatkan:
+
+#Profil Pelanggan sebagai berikut:
+#1.Sebagian besar pelanggan adalah berjenis kelamin perempuan.
+#2.Rata-rata pendapatan pelanggan dalam sebulan adalah 875000 (tidak menggunakan ukuran pemusatan mean, karena pada grafik terdapat outlier. Sehinggan ukuran pemusatan yang dipakai adalah median).
+#3.Pelanggan sering membeli produk dalam jumlah 3-4 buah.
+#4.Rata-rata total belanja yang sering dihabiskan adalah 710000.
+#5.Kebanyakan pelanggan sangat puas kepada produk yang dijual.
+
+#Gambaran produk yang dijual sebagai berikut:
+#1.Produk yang sering dibeli adalah produk D.
+#2.Rata-rata harga produk yang terjual sebesar 197500.
+
+#Dari hasil statistik deskriptif diatas kita dapat membangun hipotesis, agar analisis data yang kita lakukan kaya informasi yang didapatkan. Pembangunan hipotesis berdasarkan intuisi kita terhadap data yang sudah kita lakukan eksplorasi.
+
+#Contoh hipotesis yang dapat kita bangun berdasarkan data diatas adalah sebagai berikut:
+
+#1.Apakah ada hubungan pendapatan dengan total belanja?
+#2.Apakah ada pengaruh suatu produk dengan kepuasan pelanggan?
+#3.Apakah ada hubungan jenis kelamin dengan total belanja?
+
+
+
+#Pengenalan Uji Hipotesis
+#Uji hipotesis adalah metode pengambilan keputusan yang didasarkan dari analisis data. Dalam statistik dapat menguji sebuah hipotesis benar atau salah. Ada 2 jenis hipotesis yaitu hipotesis null (hipotesis nihil) dan hipotesis alternatif. Hipotesis nihil (H0) yaitu hipotesis yang berlawanan dengan teori yang akan dibuktikan. Hipotesis alternatif (Ha) adalah hipotesis yang berhubungan dengan teori yang akan dibuktikan.
+
+#Dalam melakukan pengujian statistik kita perlu menggunakan metode statistik uji, yang sering digunakan yaitu z-test, t-test, chi-square test, dan f-test. Pada bab kali ini kita tidak akan membahas detail dari setiap statistik uji diatas, tetapi kita akan fokus cara menggunakannya.
+
+#Selanjutnya kita harus paham mengenai p-value dan alpha yang akan digunakan dalam statistik uji.
+
+#P-value adalah peluang terkecil dalam menolak H0. Sedangkan alpha adalah tingkat kesalahan. Nilai alpha biasanya adalah 1%, 5%, dan 10%. Dalam prakteknya alpha 5% sering digunakan, karena lebih moderat.
+
+#Hipotesis H0 ditolak jika nilai p-value kurang dari alpha (5%), sedangkan jika p-value lebih dari nilai alpha maka yang Ho diterima. Untuk lebih jelasnya dapat dilihat gambar dibawah ini: Sumber gambar: https://www.slideshare.net/rhandyprasetyo/statistikauji-hipotesis
+
+
+#Perbedaan Statistik Deskriptif dan Statistik Inferensia
+#Dalam statistik ada 2 jenis analisis data, yaitu statistik deskriptif dan statistik inferensia. Uji hipotesis, yang dijelaskan pada subbab sebelumnya termasuk kedalam statistik inferensia.
+
+#Untuk membedakan antara 2 jenis analisis diatas, maka dapat menyimak penjelasan berikut:
+
+#Statistik Deskriptif adalah statistik yang digunakan untuk analisa data dengan cara menggambarkan data sampel dengan tanpa membuat kesimpulan untuk data populasi. Beberapa hal yang dapat dilakukan adalah penyajian data melalui tabel, grafik, perhitungan modus, median, mean, perhitungan penyebaran data melalui perhitungan rata-rata dan standar deviasi. Statistik Deskriptif digunakan untuk eksplorasi data.
+
+#Statistik Inferensia adalah yaitu statistik yang digunakan untuk menganalisis data sampel dan hasilnya diberlakukan untuk populasi. Beberapa hal yang dapat dilakukan adalah menguji hipotesis dengan statistik uji, seperti chi-square test, student-t test, f-test, z-score test.
+#Statistik Inferensia dapat digunakan untuk konfirmasi dari hasil statistik deskriptif.
+
+
+
+#Hubungan Antara Variabel Numerik
+#Berdasarkan hasil kasus sebelumnya, kita akan melihat hubungan antara data numerik dan numerik.
+
+#Ada dua cara untuk melihat hubungan antar variabel, yaitu dengan grafik scatter plot dan analisis korelasi. Grafik scatter plot untuk melihat arah hubungan, poisitif dan negatif. Sedangkan analisis korelasi adalah untuk menguji/konfirmasi apakah kedua variabel tersebut memang berhubungan dan sebearapa kuat hubungannya.
+
+#Rentang nilai koefisien korelasi antara -1 sampai 1. Korelasi kuat ketika mendakati -1 atau 1, sedangkan dikatakan lemah jika mendekati 0. Untuk mengetahui ada hubungan atau tidaknya menggunakan analisis korelasi, dengan hipotesis sebagai berikut :
+
+#Hipotesis Nihil (null): tidak ada hubungan antara kedua variabel.
+#Hipotesis Alternatif: ada hubungan antara kedua variabel.
+#Berikut gambaran yang lebih jelasnya: Sumber gambar: https://dsmlmdblog.blogspot.com/2016/03/pengertian-dan-perhitungan-korelasi.html
+
+
+#Scatter plot dapat disebut juga analisis deskriptif.
+#Variabel pertama yaitu data_intro$Pendapatan akan diplot untuk sumbu x, sedangkan variabel kedua yaitu data_intro$Total untuk sumbu y.
+
+```{r}
+## analisis bagaimana hubungan pendapatan dengan total belanja mengunakan scatter plot
+plot(data_intro$Pendapatan, data_intro$Total)
+```
+
+#Hubungan Pendapatan dengan Total Belanja dengan cor.test
+#Setelah melihat hubungan variabel pendapatan dengan total belanja menggunakan scatter plot diatas maka kita akan mengujinya, apakah benar-benar pendapatan memiliki pengaruh positif terhadap total belanja.
+#cor.test(data_intro$Pendapatan, data_intro$Total)
+#Berikut penjelasan function diatas :
+
+#Function cor.test digunakan untuk melihat hubungan secara statistik.
+#Pada korelasi test untuk mengujinya kita memakai t-test. Dengan hipotesis sebagai berikut:
+#Ho : tidak ada hubungan antara pendapatan dan total belanja.
+#Ha : terdapat hubungan antara pendapatan dan total belanja.
+
+```{r}
+#Gunakan cor.test untuk mencari hubungan Pendapatan dengan Total Belanja 
+cor.test(data_intro$Pendapatan, data_intro$Total)
+```
+
+
+#Hubungan Antara Variabel Kategorik
+#Hubungannya diantara keduanya dapat dilihat dengan menggunakan tabulasi silang dan dapat juga dilihat kecenderungannya. Pada hubungan antara variabel kategorik dan kategorik tersebut tidak bisa diketahui seberapa kuat hubungan diantara keduanya dan bagimana pengaruhnya (positif atau negatif). Untuk mengetahui ada hubungan atau tidaknya menggunakan uji statistik chi-square test, dengan hipotesis sebagai berikut:
+
+#Hipotesis Nihil: tidak ada hubungan antara kedua variabel
+#Hipotesis Alternatif : ada hubungan antara kedua variabel
+
+
+#Hubungan Produk dengan Tingkat Kepuasan dengan chisq.test
+#Berdasarkan kasus diatas kita akan melihat hubungan antara data kategorik dan kategorik, yaitu variabel jenis produk dan tingkat kepuasan. Sebelum menguji hubungannya, sebaiknya dilakukan tabulasi silang sebagai analisis deskriptif. Selanjutnya analisis inferensia yaitu menguji apakah ada hubungan maka dapat digunakan chi-square test.
+
+#Untuk melakukan tabulasi dan uji statistik chi-square test pada R tahapannya sebagai berikut:
+#table(data_intro$Produk, data_intro$Tingkat.Kepuasan)
+#chisq.test(table(data_intro$Produk, data_intro$Tingkat.Kepuasan))
+
+#Perintah table untuk melihat tabulasi antar variabel kategorik, sedangkan perintah chisq.test digunakan untuk melihat hubungan secara statistik.
+
+#Dengan hipotesis sebagai berikut :
+
+#Ho : tidak ada hubungan antara jenis produk dan tingkat kepuasan.
+#Ha : terdapat hubungan antara jenis produk dan tingkat kepuasan  
+
+```{r}
+## Carilah tabulasi silang antara kolom jenis produk (Produk) dan tingkat kepuasan (Tingkat.Kepuasan) dari variable data_intro
+
+table(data_intro$Produk,data_intro$Tingkat.Kepuasan)
+
+## Analisis bagaimana hubungan jenis produk dengan tingkat kepuasan menggunakan uji korelasi
+
+chisq.test(table(data_intro$Produk,data_intro$Tingkat.Kepuasan))
+```
+
+#Hubungan Antara Variabel Kategorik dan Variabel Numerik
+#Hubungan di antara keduanya dapat dilihat dengan membandingkan rata-rata pada setiap kategori. Jika nilai rata-ratanya berbeda maka kedua variabel memiliki hubungan. Pada hubungan antara variabel kategorik dan numerik tidak bisa diketahui seberapa kuat hubungan diantara keduanya dan bagimana pengaruhnya (positif atau negatif).
+
+#Untuk mengetahui ada hubungan atau tidaknya menggunakan uji statistik t-test, dengan hipotesis sebagai berikut
+
+#Hipotesis Nihil: tidak ada hubungan antara kedua variabel
+#Hipotesis Alternatif: ada hubungan antara kedua variabel
+
+
+
+#Hubungan Jenis Kelamin dengan Total Belanja dengan t.test
+#Berdasarkan kasus diatas kita akan melihat hubungan antara data kategorik dan numerik, yaitu variabel jenis kelamin dan total belanja. Sebelum menguji hubungannya, sebaiknya dilihat perbedaan rata-rata total belanja untuk laki-laki dan perempuan dengan visualisasi yaitu menggunakan boxplot. Boxplot grafik statistik dari data dengan komponen lima ukuran statistik yaitu Min, Q1,Q2, Q3, dan Max. Untuk lebih jelasnya mengenai boxplot dapat dilihat gambar dibawah ini: ...
+
+#Selanjutnya analisis inferensia yaitu untuk mengetahui apakah ada perbedaan rata-rata total belanja pada laki-laki dan perempuan maka digunakan statistik uji t-test.
+
+#Untuk melakukan visualisasi boxplot dan uji statistik t-test pada R tahapannya sebagai berikut: 
+#boxplot(Total~Jenis.Kelamin,data = data_intro)
+#t.test(Total~Jenis.Kelamin,data = data_intro)
+
+#Function boxplot digunakan untuk melihat secara grafik rata-rata total belanja pada laki-laki dan perempuan, sedangkan perintah t.test digunakan untuk melihat hubungan secara statistik. Penggunaan kedua fungsi diatas yaitu variabel pertama yang bertipe numerik, sedangkan variabel kedua variabel kategorik. Hipotesis t-test sebagai berikut :
+
+#Hipotesis Nihil (null): tidak ada perbedaan rata-rata total belanja antara laki-laki dan perempuan
+#Hipotesis Alternatif : ada perbedaan rata-rata total belanja antara laki-laki dan perempuan
+
+
+```{r}
+## carilah boxplot antara variabel jenis kelamin dengan total belanja
+boxplot(Total~Jenis.Kelamin,data = data_intro)
+
+## analisis bagaimana hubungan jenis kelamin dengan total belanja menggunakan uji statistik t-test
+t.test(Total~Jenis.Kelamin,data = data_intro)
+
+```
+
+
+#Cara Analisis yg runtut adalah:
+#1. eksplorasi
+#2. membuat hipotesis
+#3. analisis inferensia
+#4. memberi kesimpulan
+#5. Memberikan rekomendasi berdasarkan analisis data
+
+#Dari pembahasan materi diatas maka kesimpulannya sebagai berikut:
+
+#Sebelum memulai menganalisis data harus dilihat summary per tiap variabel.
+#Analisis Deskriptif digunakan untuk membangun sebuah hipotesis.
+#Analisis Inferensia digunakan untuk menguji hipotesis.
+
+
